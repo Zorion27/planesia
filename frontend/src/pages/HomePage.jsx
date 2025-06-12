@@ -6,13 +6,15 @@ const HomePage = () => {
   const [taglineVisible, setTaglineVisible] = useState(false);
   const [detailsTextVisible, setDetailsTextVisible] = useState(false);
   const [bgPos, setBgPos] = useState('0% 0%');
-  let pageCount = 1;
+  const [taglineFadeOut, setTaglineFadeOut] = useState(false);
+  const [pageCount, setPageCount] = useState(1);
+  const [secondTaglineVisible, setSecondTaglineVisible] = useState(false);
 
   const handleClick = () => {
-    pageCount++;
-    console.log(`Page count: ${pageCount}`);
+    setPageCount(prev => prev + 1);
+    console.log(`Page count: ${pageCount + 1}`);  
 
-    if (pageCount == 2) {
+    if (pageCount + 1 === 2) {
       setEsiaOut(true);
       setPlanTop(true);
       setBgPos('0% 25%');
@@ -20,7 +22,12 @@ const HomePage = () => {
       setTimeout(() => setDetailsTextVisible(true), 500);
     }
 
-    
+    if (pageCount + 1 === 3) {
+      setBgPos('0% 70%');
+      setDetailsTextVisible(false);
+      setTaglineFadeOut(true);
+      setSecondTaglineVisible(true);
+    }
   };
 
   return (
@@ -39,9 +46,9 @@ const HomePage = () => {
       <div className="absolute pointer-events-none"
         style={{
           top: '0px',
-          right: '280px',
-          width: '350px',
-          height: '350px',
+          right: '20vw',
+          width: '25vw',
+          height: '25vw',
           background: '#F98C6A',
           borderRadius: '50%',
           filter: 'blur(60px)',
@@ -52,9 +59,9 @@ const HomePage = () => {
       <div className="absolute pointer-events-none"
         style={{
           top: '0px',
-          left: '50px',
-          width: '300px',
-          height: '180px',
+          left: '5vw',
+          width: '20vw',
+          height: '12vw',
           background: '#E9A350',
           borderRadius: '50%',
           filter: 'blur(60px)',
@@ -62,7 +69,8 @@ const HomePage = () => {
           zIndex: 2,
         }}
       />
-      <div className="relative flex justify-center items-center">
+      <div className="relative flex justify-center items-center w-full">
+        {/* Plan text */}
         <span
           className={`
             text-black text-center
@@ -72,23 +80,25 @@ const HomePage = () => {
           style={{
             fontFamily: 'Khmer MN',
             fontWeight: 400,
-            fontSize: '100px',
+            fontSize: 'clamp(50px, 6vw, 100px)',
             lineHeight: '100%',
             letterSpacing: '0%',
           }}
         >
           Plan
         </span>
+        
+        {/* esia text */}
         <span
           className={`
-            text-black text-center ml-[-8px]
+            text-black text-center ml-[-0.5vw]
             transition-all duration-[1500ms] ease-in-out z-10
-            ${esiaOut ? 'translate-y-[-80vh] ' : ''}
+            ${esiaOut ? 'translate-y-[-80vh]' : ''}
           `}
           style={{
             fontFamily: 'Khmer MN',
             fontWeight: 400,
-            fontSize: '100px',
+            fontSize: 'clamp(50px, 6vw, 100px)',
             lineHeight: '100%',
             letterSpacing: '0%',
           }}
@@ -96,16 +106,18 @@ const HomePage = () => {
           esia
         </span>
 
+        {/* Tagline */}
         <span
           className={`
             text-black text-center absolute whitespace-nowrap left-1/2 -translate-x-1/2
             transition-all duration-[2000ms] ease-in-out z-10
-            ${taglineVisible ? 'translate-y-[-25vh] opacity-100' : 'translate-y-[100vh] opacity-0'}
+            ${taglineVisible ? 'translate-y-[-25vh]' : 'translate-y-[100vh]'}
+            ${taglineFadeOut ? 'opacity-0' : 'opacity-100'}
           `}
           style={{
             fontFamily: 'Khmer MN',
             fontWeight: 400,
-            fontSize: '56px',
+            fontSize: 'clamp(28px, 3.5vw, 56px)',
             lineHeight: '100%',
             letterSpacing: '0%',
           }}
@@ -113,10 +125,29 @@ const HomePage = () => {
           Your Ideas into Iconic Experiences
         </span>
 
+        {/* New Tagline */}
+        <span
+          className={`
+            text-black text-center absolute whitespace-nowrap left-1/2 -translate-x-1/2
+            transition-all duration-[2000ms] ease-in-out z-10
+            ${secondTaglineVisible ? 'translate-y-[-25vh] opacity-100' : 'translate-y-[100vh] opacity-0'}
+          `}
+          style={{
+            fontFamily: 'Khmer MN',
+            fontWeight: 400,
+            fontSize: 'clamp(28px, 3.5vw, 56px)',
+            lineHeight: '100%',
+            letterSpacing: '0%',
+          }}
+        >
+          Innovative and Timeless Events
+        </span>
+
+        {/* Details text */}
         <div
           className={`
             text-black absolute flex flex-col items-center translate-y-[10vh]
-            transition-all duration-[2000ms] ease-in-out z-10
+            transition-all duration-[2000ms] ease-in-out z-10 max-w-[40vw]
             ${detailsTextVisible ? 'translate-x-[-40vh] opacity-100' : 'translate-x-[-100vh] opacity-0'}
           `}
         >
@@ -125,7 +156,7 @@ const HomePage = () => {
             style={{
               fontFamily: 'Marck Script',
               fontWeight: 400,
-              fontSize: '40px',
+              fontSize: 'clamp(20px, 2.5vw, 40px)',
               lineHeight: '170%',
               letterSpacing: '0%',
               textAlign: 'center',
@@ -138,7 +169,7 @@ const HomePage = () => {
             style={{
               fontFamily: 'Marck Script',
               fontWeight: 400,
-              fontSize: '32px',
+              fontSize: 'clamp(16px, 2vw, 32px)',
               lineHeight: '170%',
               letterSpacing: '0%',
               textAlign: 'center',
@@ -151,7 +182,7 @@ const HomePage = () => {
             style={{
               fontFamily: 'Marck Script',
               fontWeight: 400,
-              fontSize: '32px',
+              fontSize: 'clamp(16px, 2vw, 32px)',
               lineHeight: '100%',
               letterSpacing: '0%',
               textAlign: 'center',
@@ -161,6 +192,7 @@ const HomePage = () => {
           </p>
         </div>
 
+        {/* First Image */}
         <div className={`
           absolute translate-y-[10vh]
           transition-all duration-[2000ms] ease-in-out z-10
@@ -169,7 +201,20 @@ const HomePage = () => {
           <img 
             src="/man_landing_page.png" 
             alt="Landing page illustration"
-            className="w-[45vw] h-auto max-w-[1000px]"
+            className="w-[45vw] h-auto max-w-[1000px] min-w-[300px]"
+          />
+        </div>
+
+        {/* Second Image */}
+        <div className={`
+          absolute translate-y-[10vh]
+          transition-all duration-[2000ms] ease-in-out z-10
+          ${secondTaglineVisible ? 'translate-x-[40vh] opacity-100' : 'translate-x-[100vh] opacity-0'}
+        `}>
+          <img 
+            src="/dog.png" 
+            alt="Dog illustration"
+            className="w-[45vw] h-auto max-w-[1000px] min-w-[300px]"
           />
         </div>
       </div>
